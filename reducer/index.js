@@ -6,7 +6,8 @@ import {
   RESET_DECK,
 } from "../actions";
 import { decks as DefaultDeck } from "../utils/data";
-export function decks(state = {}, action) {
+
+export default function decks(state = {}, action) {
   switch (action.type) {
     case RECEIVE_DECKS:
       return {

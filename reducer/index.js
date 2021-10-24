@@ -23,11 +23,12 @@ export default function decks(state = {}, action) {
         },
       };
     case ADD_CARD_TO_DECK:
-      const { title, card } = action;
+      const { deck_id, card } = action;
       return {
         ...state,
-        [title]: {
-          questions: [...state[title].questions].concat(card),
+        [deck_id]: {
+          ...state[deck_id],
+          questions: [...state[deck_id].questions].concat(card),
         },
       };
     case REMOVE_DECK:

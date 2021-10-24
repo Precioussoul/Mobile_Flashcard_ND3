@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import reducers from "./reducer";
 import logger from "redux-logger";
+import DeckContainer from "./components/DeckContainer";
+import { gray, white } from "./utils/color";
 
 const store = createStore(reducers, applyMiddleware(logger));
 
@@ -12,8 +14,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
         <StatusBar style="auto" />
+        <DeckContainer />
       </View>
     </Provider>
   );
@@ -22,7 +24,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

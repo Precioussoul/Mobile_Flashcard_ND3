@@ -6,18 +6,21 @@ import { applyMiddleware, createStore } from "redux";
 import reducers from "./reducer";
 import logger from "redux-logger";
 import DeckContainer from "./components/DeckContainer";
-import { gray, white } from "./utils/color";
-
+import AppNavigation from "./navigations/AppNavigation";
+import { NavigationContainer } from "@react-navigation/native";
 const store = createStore(reducers, applyMiddleware(logger));
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <View style={styles.container}>
-        <StatusBar style="auto" />
-        <DeckContainer />
-      </View>
-    </Provider>
+    <NavigationContainer>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <StatusBar style="auto" />
+          <DeckContainer />
+          <AppNavigation />
+        </View>
+      </Provider>
+    </NavigationContainer>
   );
 }
 

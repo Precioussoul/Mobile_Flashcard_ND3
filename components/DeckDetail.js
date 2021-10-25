@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Deck from "./Deck";
-import TouchButton from "./TouchButton";
-import TextButton from "./TextButton";
-import { gray, textGray, green, white, red } from "../utils/colors";
+import { white, gray } from "../utils/color";
 import { connect } from "react-redux";
 import { removeDeck } from "../utils/api";
 class DeckDetail extends Component {
@@ -30,21 +27,21 @@ class DeckDetail extends Component {
               this.props.navigation.navigate("AddCard", { title: deck.title })
             }
           >
-            Add Card
+            <Text>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.navigate("Quiz", { title: deck.title })
             }
           >
-            Start Quiz
+            <Text> Start Quiz</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={{ color: red }}
           onPress={() => this.handleDelete(deck.title)}
         >
-          Delete Deck
+          <Text>Delete Deck</Text>
         </TouchableOpacity>
       </View>
     );

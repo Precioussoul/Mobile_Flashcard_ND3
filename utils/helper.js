@@ -10,6 +10,7 @@ export async function getDecks() {
     if (result === null) {
       AsyncStorage.setItem(DECK_INFORMATION_KEY, JSON.stringify(decks));
     }
+    console.log("Async result", result);
 
     return result === null ? decks : JSON.parse(result);
   } catch (e) {

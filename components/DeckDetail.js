@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Deck from "./Deck";
-import { white, gray } from "../utils/color";
+import { white, red, gray, purple, lightPurp } from "../utils/color";
 import { connect } from "react-redux";
 import { removeDeck } from "../utils/api";
 class DeckDetail extends Component {
@@ -21,27 +21,40 @@ class DeckDetail extends Component {
     return (
       <View style={styles.container}>
         <Deck id={deck.title} />
-        <View>
+        <View style={{ marginTop: 80 }}>
           <TouchableOpacity
+            style={[
+              styles.deckContainer,
+              { backgroundColor: purple, marginHorizontal: 40 },
+            ]}
             onPress={() =>
               this.props.navigation.navigate("AddCard", { title: deck.title })
             }
           >
-            <Text>Add Card</Text>
+            <Text style={[styles.deckText, { color: white }]}>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            style={[
+              styles.deckContainer,
+              { backgroundColor: lightPurp, marginHorizontal: 40 },
+            ]}
             onPress={() =>
               this.props.navigation.navigate("Quiz", { title: deck.title })
             }
           >
-            <Text> Start Quiz</Text>
+            <Text style={[styles.deckText, { color: white }]}> Start Quiz</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          style={{ color: red }}
+          style={[
+            styles.deckContainer,
+            { backgroundColor: red, marginTop: 80, marginHorizontal: 80 },
+          ]}
           onPress={() => this.handleDelete(deck.title)}
         >
-          <Text>Delete Deck</Text>
+          <Text style={{ color: white, textAlign: "auto", fontSize: 20 }}>
+            Delete
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -51,17 +64,42 @@ class DeckDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-around",
     paddingTop: 16,
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 16,
-    backgroundColor: gray,
+  },
+  deckContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 60,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingRight: 60,
+    backgroundColor: white,
+    borderRadius: 8,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.28,
+    shadowRadius: 4.84,
+
+    elevation: 5,
+  },
+  deckText: {
+    fontSize: 28,
+  },
+  cardText: {
+    fontSize: 18,
+    color: gray,
   },
 });
 
-const mapStateToProps = (state, { navigation }) => {
-  const title = navigation.state.param;
+const mapStateToProps = (state, { route, navigation }) => {
+  const { title } = route.params;
   const deck = state[title];
 
   return {

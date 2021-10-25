@@ -18,10 +18,10 @@ export function addDeck(title) {
   };
 }
 
-export function addCardToDeck(title, card) {
+export function addCardToDeck(deck_id, card) {
   return {
     type: ADD_CARD_TO_DECK,
-    title,
+    deck_id,
     card,
   };
 }

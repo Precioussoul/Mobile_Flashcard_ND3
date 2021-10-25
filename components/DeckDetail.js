@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Deck from "./Deck";
 import { white, red, gray, purple, lightPurp } from "../utils/color";
 import { connect } from "react-redux";
-import { removeDeck } from "../utils/api";
+import { removeDeck } from "../actions";
 class DeckDetail extends Component {
   shouldComponentUpdate(nextProps) {
     return nextProps.deck !== undefined;
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state, { route, navigation }) => {
+const mapStateToProps = (state, { route }) => {
   const { title } = route.params;
   const deck = state[title];
 

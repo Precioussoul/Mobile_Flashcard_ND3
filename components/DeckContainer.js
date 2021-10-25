@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { receiveDecks } from "../actions";
 import { gray, lightPurp, purple } from "../utils/color";
@@ -15,7 +15,7 @@ class DeckContainer extends Component {
   render() {
     const { decks, navigation } = this.props;
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.title}>Mobile flashcard</Text>
         {Object.values(decks).map((deck) => (
           <TouchableOpacity
@@ -27,7 +27,7 @@ class DeckContainer extends Component {
             <Deck id={deck.title} />
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     );
   }
 }

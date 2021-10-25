@@ -6,8 +6,11 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
+import { connect } from "react-redux";
+import { addDeck } from "../actions";
 import { gray, lightPurp, orange, purple, white } from "../utils/color";
-export default class AddDeck extends Component {
+import { saveDeckTitle } from "../utils/helper";
+class AddDeck extends Component {
   state = {
     text: "",
   };
@@ -17,6 +20,11 @@ export default class AddDeck extends Component {
 
   handleSubmit = () => {
     this.setState({ text: "" });
+    const { navigation, dispatch } = this.props;
+    dispatch(addDeck(this.state.text));
+    saveDeckTitle(this.state.text);
+
+    navigation.goBack();
   };
 
   render() {
@@ -32,7 +40,7 @@ export default class AddDeck extends Component {
             value={this.state.text}
             onChangeText={this.handleChange}
             placeholder="Name your deck"
-            autoFocus={true}
+            autoFocus
             returnKeyType="done"
             onSubmitEditing={this.handleSubmit}
           />
@@ -40,10 +48,10 @@ export default class AddDeck extends Component {
         <TouchableOpacity
           style={[
             styles.deckContainer,
-            { marginHorizontal: 60, marginTop: 40, backgroundColor: orange },
+            { marginHorizontal: 40, marginTop: 40, backgroundColor: orange },
           ]}
           onPress={this.handleSubmit}
-          disabled={this.state.text === ""}
+          disabled={this.state.text === "" ? true : false}
         >
           <Text style={{ color: white, fontSize: 20 }}>Create Deck</Text>
         </TouchableOpacity>
@@ -102,3 +110,5 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
+
+export default connect()(AddDeck);

@@ -7,16 +7,37 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
+import { connect } from "react-redux";
+import { addCardToDeck } from "../actions";
+import { addCardToDeck as addCardToDeckAsyncStorage } from "../utils/helper";
 import { gray, lightPurp, purple, white } from "../utils/color";
 
 class AddCard extends Component {
   state = {
-    value: "",
+    question: "",
+    answer: "",
   };
 
-  onChangeText = (value) => {
-    this.setState({ value });
+  onChangeQuestion = (question) => {
+    this.setState({ question });
   };
+  onChangeAnswer = (answer) => {
+    this.setState({ answer });
+  };
+
+  handleSubmit = () => {
+    const { navigation, dispatch, title } = this.props;
+    console.log("this is title", title);
+    const { question, answer } = this.state;
+    const card = {
+      question,
+      answer,
+    };
+    dispatch(addCardToDeck(title, card));
+    addCardToDeckAsyncStorage(title, card);
+    navigation.goBack();
+  };
+
   render() {
     const { value } = this.state;
     return (
@@ -36,7 +57,7 @@ class AddCard extends Component {
           <TextInput
             style={styles.input}
             value={value}
-            onChangeText={this.onChangeText}
+            onChangeText={this.onChangeQuestion}
             placeholder="Question"
             autoFocus={true}
             returnKeyType="next"
@@ -48,7 +69,7 @@ class AddCard extends Component {
           <TextInput
             style={styles.input}
             value={value}
-            onChangeText={this.onChangeText}
+            onChangeText={this.onChangeAnswer}
             placeholder="Answer"
             // ref={(input) => {
             //   this.answerTextInput = input;
@@ -57,7 +78,7 @@ class AddCard extends Component {
             onSubmitEditing={this.handleSubmit}
           />
         </View>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={this.handleSubmit}>
           <Text style={{ color: lightPurp, fontWeight: "bold", fontSize: 17 }}>
             Submit
           </Text>
@@ -115,4 +136,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddCard;
+function mapStateToProps(decks, { route }) {
+  const { title } = route.params;
+
+  return {
+    title,
+  };
+}
+
+export default connect(mapStateToProps)(AddCard);

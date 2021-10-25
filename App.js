@@ -70,17 +70,15 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Flashcard"
-            component={MyTab}
-            options={{
-              headerTintColor: white,
-              headerStyle: {
-                backgroundColor: purple,
-              },
-            }}
-          />
+        <Stack.Navigator
+          screenOptions={{
+            headerTintColor: white,
+            headerStyle: {
+              backgroundColor: purple,
+            },
+          }}
+        >
+          <Stack.Screen name="Flashcard" component={MyTab} />
           <Stack.Screen name="DeckDetail" component={DeckDetail} />
           <Stack.Screen name="AddCard" component={AddCard} />
           <Stack.Screen name="Quiz" component={Quiz} />

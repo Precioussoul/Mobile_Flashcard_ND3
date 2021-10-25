@@ -17,11 +17,20 @@ export default function decks(state = {}, action) {
     case ADD_DECK:
       const { title } = action;
       return {
+        ...state,
         [title]: {
           title,
           questions: [],
         },
       };
+
+    case REMOVE_DECK:
+      const { id } = action;
+
+      const { [id]: value, ...others } = state;
+      console.log("others ", others);
+      return others;
+
     case ADD_CARD_TO_DECK:
       const { deck_id, card } = action;
       return {
@@ -31,13 +40,6 @@ export default function decks(state = {}, action) {
           questions: [...state[deck_id].questions].concat(card),
         },
       };
-    case REMOVE_DECK:
-      const { id } = action;
-
-      const { [id]: value, ...others } = state;
-      console.log("others ", others);
-      return others;
-
     case RESET_DECK:
       return DefaultDeck;
 

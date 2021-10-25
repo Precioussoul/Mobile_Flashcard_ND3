@@ -22,8 +22,8 @@ class Quiz extends Component {
     console.log("this is cardlist", cardlist);
     const questions = cardlist.map((card) => card.questions);
     console.log("questions is here", questions);
-    const ReactQuestion = questions[0].map((react) => react.question);
-    const ReactAnswer = questions[0].map((react) => react.answer);
+    const ReactQuestion = questions[2].map((react) => react.question);
+    const ReactAnswer = questions[2].map((react) => react.answer);
     console.log("this is react", ReactQuestion);
     const { showAnswer } = this.state;
     const questionAnswer = showAnswer === true ? ReactAnswer : ReactQuestion;
@@ -33,9 +33,9 @@ class Quiz extends Component {
           {" "}
           {showAnswer === false ? "Question" : "Answer"}
         </Text>
-        {questionAnswer.map((question) => (
-          <View style={styles.Card}>
-            <Text key={question} style={styles.CardQuestion}>
+        {questionAnswer.map((question, idx) => (
+          <View style={styles.Card} key={idx}>
+            <Text key={idx} style={styles.CardQuestion}>
               {question}
             </Text>
           </View>

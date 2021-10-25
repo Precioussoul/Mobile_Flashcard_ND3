@@ -58,7 +58,7 @@ class AddCard extends Component {
           />
         </View>
         <TouchableOpacity style={styles.card}>
-          <Text style={{ color: lightPurp, fontWeight: "bold", fontSize: 18 }}>
+          <Text style={{ color: lightPurp, fontWeight: "bold", fontSize: 17 }}>
             Submit
           </Text>
         </TouchableOpacity>

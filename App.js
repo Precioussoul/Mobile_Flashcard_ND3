@@ -14,6 +14,7 @@ import AddCard from "./components/AddCard";
 import { white, purple } from "./utils/color";
 import { FontAwesome5, FontAwesome, Ionicons } from "@expo/vector-icons";
 import AddDeck from "./components/AddDeck";
+import Quiz from "./components/Quiz";
 
 const Tab = createBottomTabNavigator();
 
@@ -82,6 +83,7 @@ export default function App() {
           />
           <Stack.Screen name="DeckDetail" component={DeckDetail} />
           <Stack.Screen name="AddCard" component={AddCard} />
+          <Stack.Screen name="Quiz" component={Quiz} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

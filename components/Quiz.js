@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -23,16 +24,19 @@ const Response = {
   Incorrect: "incorrect",
 };
 class Quiz extends Component {
+  constructor(props) {
+    super(props);
+    this.Myref = React.createRef(PagerView);
+  }
   state = {
     showAnswer: false,
-    screen: DisplayScreen.DisplayResults,
+    screen: DisplayScreen.DisplayQuestion,
     correctCount: 0,
     IncorrectCount: 0,
     questionCount: this.props.deck.questions.length,
     answerCount: new Array(this.props.deck.questions.length).fill(0),
   };
-
-  ShowAnswer = () => {
+  toggleQuestionAnswer = () => {
     if (this.state.showAnswer === false) {
       this.setState({ showAnswer: true });
     } else {
@@ -52,7 +56,7 @@ class Quiz extends Component {
     }
     this.setState(
       (prevState) => ({
-        answered: prevState.answerCount.map((ans, idx) =>
+        answerCount: prevState.answerCount.map((ans, idx) =>
           page === idx ? 1 : ans
         ),
       }),
@@ -62,7 +66,7 @@ class Quiz extends Component {
         if (questionCount === correctCount + IncorrectCount) {
           this.setState({ screen: DisplayScreen.DisplayResults });
         } else {
-          PagerView.setPage(page + 1);
+          this.Myref.current.setPage(page + 1);
           this.setState(() => ({
             screen: DisplayScreen.DisplayQuestion,
           }));
@@ -89,7 +93,7 @@ class Quiz extends Component {
       return (
         <View style={[styles.Card, { flex: 0.7, marginTop: 20 }]}>
           <View style={{ margin: 20 }}>
-            <Text style={[styles.plain, { textAlign: "center" }]}>
+            <Text style={[styles.plain, { textAlign: "center", fontSize: 20 }]}>
               You cannot take a quiz because there are no cards in this deck.
             </Text>
             <Text style={{ textAlign: "center", paddingTop: 10 }}>
@@ -113,13 +117,17 @@ class Quiz extends Component {
     if (this.state.screen === DisplayScreen.DisplayResults) {
       const { correctCount, questionCount } = this.state;
       const percent = ((correctCount / questionCount) * 100).toFixed(0);
-      const resultStyle =
-        percent >= 70 ? styles.resultTextGood : styles.resultTextBad;
+      const resultStyle = percent >= 100 ? styles.correct : styles.Incorrect;
+      const IconColor = percent >= 100 ? styles.success : styles.low;
 
       return (
         <View style={styles.Card}>
           <View style={{ margin: 10 }}>
-            <Text style={styles.plain}>Done</Text>
+            {percent >= 100 ? (
+              <Ionicons name="checkmark-circle" size={100} style={IconColor} />
+            ) : (
+              <Ionicons name="ios-timer-sharp" size={100} style={IconColor} />
+            )}
           </View>
           <View style={{ margin: 10 }}>
             <Text style={[styles.plain, { textAlign: "center" }]}>
@@ -160,7 +168,7 @@ class Quiz extends Component {
     }
 
     return (
-      <PagerView style={{ flex: 1 }} initialPage={0}>
+      <PagerView style={{ flex: 1 }} initialPage={0} ref={this.Myref}>
         {questions.map((card, idx) => (
           <View key={idx}>
             <View style={{ marginBottom: 15 }}>
@@ -169,12 +177,24 @@ class Quiz extends Component {
               </Text>
             </View>
             <View style={styles.Card}>
+              <Text
+                style={[
+                  styles.plain,
+                  {
+                    textDecorationLine: "underline",
+                    marginBottom: 10,
+                    color: lightPurp,
+                  },
+                ]}
+              >
+                {showAnswer === false ? "Question" : "Answer"}
+              </Text>
               <Text key={idx} style={styles.CardQuestion}>
                 {showAnswer === false ? card.question : card.answer}
               </Text>
             </View>
             <View>
-              <TouchableOpacity onPress={this.ShowAnswer}>
+              <TouchableOpacity onPress={this.toggleQuestionAnswer}>
                 <Text style={styles.plain}>
                   {showAnswer === false ? "Show Answer" : "Show Question"}
                 </Text>
@@ -305,15 +325,21 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 
-  resultTextGood: {
+  correct: {
     color: "green",
     fontSize: 46,
     textAlign: "center",
   },
-  resultTextBad: {
+  Incorrect: {
     color: red,
     fontSize: 46,
     textAlign: "center",
+  },
+  success: {
+    color: "green",
+  },
+  low: {
+    color: "#9b2226",
   },
 });
 

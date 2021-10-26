@@ -15,6 +15,7 @@ import { white, purple } from "./utils/color";
 import {
   FontAwesome5,
   FontAwesome,
+  MaterialCommunityIcons,
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
@@ -31,18 +32,17 @@ export function MyTab() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "bold",
+          margin: 0,
+          padding: 0,
+        },
         tabBarOptions: {
           activeTintColor: Platform.OS === "ios" ? purple : white,
           style: {
             height: 56,
             backgroundColor: Platform.OS === "ios" ? white : purple,
-            shadowColor: "rgba( 0,0,0, 0.24)",
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowRadius: 6,
-            shadowOpacity: 1,
           },
         },
       }}
@@ -52,7 +52,11 @@ export function MyTab() {
         component={DeckContainer}
         options={{
           tabBarIcon: () => (
-            <FontAwesome5 name="book-reader" size={35} color={purple} />
+            <MaterialCommunityIcons
+              name="folder-table"
+              size={35}
+              color={purple}
+            />
           ),
         }}
       />

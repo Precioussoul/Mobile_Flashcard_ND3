@@ -21,6 +21,8 @@ import {
 import AddDeck from "./components/AddDeck";
 import Quiz from "./components/Quiz";
 import ResetDecks from "./components/ResetDecks";
+import { Component } from "react";
+import { setLocalNotification } from "./utils/api";
 
 const Tab = createBottomTabNavigator();
 
@@ -82,24 +84,29 @@ const Stack = createNativeStackNavigator();
 
 const store = createStore(reducers, applyMiddleware(logger));
 
-export default function App() {
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerTintColor: white,
-            headerStyle: {
-              backgroundColor: purple,
-            },
-          }}
-        >
-          <Stack.Screen name="Flashcard" component={MyTab} />
-          <Stack.Screen name="DeckDetail" component={DeckDetail} />
-          <Stack.Screen name="AddCard" component={AddCard} />
-          <Stack.Screen name="Quiz" component={Quiz} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
-  );
+export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerTintColor: white,
+              headerStyle: {
+                backgroundColor: purple,
+              },
+            }}
+          >
+            <Stack.Screen name="Flashcard" component={MyTab} />
+            <Stack.Screen name="DeckDetail" component={DeckDetail} />
+            <Stack.Screen name="AddCard" component={AddCard} />
+            <Stack.Screen name="Quiz" component={Quiz} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    );
+  }
 }

@@ -243,58 +243,6 @@ class Quiz extends Component {
           </View>
         ))}
       </PagerView>
-
-      //   <View>
-      //     <Text style={[styles.plain, { fontSize: 30, marginTop: 10 }]}>
-      //       {" "}
-      //       {showAnswer === false ? "Question" : "Answer"}
-      //     </Text>
-      //     {questions.map((card, idx) => (
-      //       <View>
-      //         <View style={{ marginBottom: 15 }}>
-      //           <Text style={{ fontSize: 20 }}>
-      //             {idx + 1} / {questions.length}
-      //           </Text>
-      //         </View>
-      //         <View style={styles.Card} key={idx}>
-      //           <Text key={idx} style={styles.CardQuestion}>
-      //             {showAnswer === false ? card.question : card.answer}
-      //           </Text>
-      //         </View>
-      //       </View>
-      //     ))}
-      //     <TouchableOpacity onPress={this.ShowAnswer}>
-      //       <Text style={styles.plain}>
-      //         {showAnswer === false ? "Show Answer" : "Show Question"}
-      //       </Text>
-      //     </TouchableOpacity>
-      //     <View style={{ marginTop: 20 }}>
-      //       <Text style={[styles.plain, { color: lightPurp, fontSize: 14 }]}>
-      //         {" "}
-      //         Press the Button option to guess the Answer{" "}
-      //       </Text>
-      //       <TouchableOpacity
-      //         style={[
-      //           styles.Card,
-      //           { marginHorizontal: 70, backgroundColor: "green" },
-      //         ]}
-      //       >
-      //         <Text style={{ color: white, fontWeight: "bold", fontSize: 22 }}>
-      //           Correct
-      //         </Text>
-      //       </TouchableOpacity>
-      //       <TouchableOpacity
-      //         style={[
-      //           styles.Card,
-      //           { marginHorizontal: 70, backgroundColor: red },
-      //         ]}
-      //       >
-      //         <Text style={{ color: white, fontWeight: "bold", fontSize: 22 }}>
-      //           Incorrect
-      //         </Text>
-      //       </TouchableOpacity>
-      //     </View>
-      //   </View>
     );
   }
 }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { receiveDecks } from "../actions";
-import { gray, lightPurp, purple } from "../utils/color";
+import { purple } from "../utils/color";
 import { getDecks } from "../utils/helper";
 import Deck from "./Deck";
 

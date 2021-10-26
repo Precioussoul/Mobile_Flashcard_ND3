@@ -41,14 +41,6 @@ function CreateChannel() {
   };
 }
 
-function createNotification() {
-  return {
-    title: "Mobile Flashcard Reminder 📬",
-    body: "👋 Don't Forget to Study your Flashcard Today 📖",
-    sound: "bell.wav",
-  };
-}
-
 export function setLocalNotification() {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
@@ -80,11 +72,13 @@ export function setLocalNotification() {
               // i don't think this method is not supported for the latest documentation and notification only work when build, i guessed
 
               Notifications.scheduleNotificationAsync({
-                content: createNotification(),
+                content: {
+                  title: "Mobile Flashcard Reminder 📬",
+                  body: "👋 Don't Forget to Study your Flashcard Today 📖",
+                  sound: "bell.wav",
+                },
                 trigger: {
                   seconds: 20,
-
-                  minute: 0,
                   repeats: true,
                   channelId: ChannelID,
                 },

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
+import { Entypo } from "@expo/vector-icons";
 import {
   gray,
   lightPurp,
@@ -12,17 +13,9 @@ import {
   white,
 } from "../utils/color";
 import PagerView from "react-native-pager-view";
+import { DisplayScreen } from "../utils/helper";
+import { Response } from "../utils/helper";
 
-const DisplayScreen = {
-  DisplayQuestion: "DisplayQuestion",
-  DisplayAnswer: "DisplayAnswer",
-  DisplayResults: "DisplayResults",
-};
-
-const Response = {
-  correct: "correct",
-  Incorrect: "incorrect",
-};
 class Quiz extends Component {
   constructor(props) {
     super(props);
@@ -93,19 +86,34 @@ class Quiz extends Component {
       return (
         <View style={[styles.Card, { flex: 0.7, marginTop: 20 }]}>
           <View style={{ margin: 20 }}>
-            <Text style={[styles.plain, { textAlign: "center", fontSize: 20 }]}>
+            <Text style={[styles.plain, { textAlign: "center", fontSize: 26 }]}>
               You cannot take a quiz because there are no cards in this deck.
             </Text>
             <Text style={{ textAlign: "center", paddingTop: 10 }}>
               Please add some cards and try again.
             </Text>
             <TouchableOpacity
-              style={[styles.Card, { backgroundColor: purple, marginTop: 70 }]}
+              style={[
+                styles.boxShadow,
+                {
+                  padding: 10,
+                  flexDirection: "row",
+                  marginTop: 60,
+                  backgroundColor: purple,
+                  justifyContent: "center",
+                },
+              ]}
               onPress={() => {
                 this.props.navigation.goBack();
               }}
             >
-              <Text style={{ color: white }}>Go Back</Text>
+              <Entypo
+                name="arrow-with-circle-left"
+                size={24}
+                color={purple}
+                style={{ marginHorizontal: 5, color: white }}
+              />
+              <Text style={{ fontSize: 18, color: white }}>Back</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -323,6 +331,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontStyle: "italic",
+  },
+  boxShadow: {
+    backgroundColor: white,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
   },
 
   correct: {

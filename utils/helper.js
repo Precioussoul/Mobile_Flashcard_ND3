@@ -58,3 +58,14 @@ export async function addCardToDeck(title, card) {
     console.log(e);
   }
 }
+
+export const DisplayScreen = {
+  DisplayQuestion: "DisplayQuestion",
+  DisplayAnswer: "DisplayAnswer",
+  DisplayResults: "DisplayResults",
+};
+
+export const Response = {
+  correct: "correct",
+  Incorrect: "incorrect",
+};

@@ -12,9 +12,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DeckContainer from "./components/DeckContainer";
 import AddCard from "./components/AddCard";
 import { white, purple } from "./utils/color";
-import { FontAwesome5, FontAwesome, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  FontAwesome,
+  Ionicons,
+  AntDesign,
+} from "@expo/vector-icons";
 import AddDeck from "./components/AddDeck";
 import Quiz from "./components/Quiz";
+import ResetDecks from "./components/ResetDecks";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,8 +49,8 @@ export function MyTab() {
         name="Decks"
         component={DeckContainer}
         options={{
-          tabBarIcon: ({ tintColor }) => (
-            <FontAwesome5 name="book-reader" size={38} color={purple} />
+          tabBarIcon: () => (
+            <FontAwesome5 name="book-reader" size={35} color={purple} />
           ),
         }}
       />
@@ -53,8 +59,18 @@ export function MyTab() {
         component={AddDeck}
         options={{
           tabBarLabel: "Add Deck",
-          tabBarIcon: ({ tintColor }) => (
-            <FontAwesome name="plus-square" size={38} color={purple} />
+          tabBarIcon: () => (
+            <AntDesign name="pluscircle" size={35} color={purple} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={ResetDecks}
+        options={{
+          tabBarLabel: "Settings",
+          tabBarIcon: () => (
+            <Ionicons name="settings" size={35} color={purple} />
           ),
         }}
       />
@@ -87,29 +103,3 @@ export default function App() {
     </Provider>
   );
 }
-
-//  function MyStack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="Home" component={MyTab} />
-//       <Stack.Screen
-//         name="DeckDetail"
-//         component={DeckDetail}
-//
-//       />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export default function Main() {
-//   return (
-//     <NavigationContainer>
-//       <Provider store={store}>
-//         <View style={styles.container}>
-//           <StatusBar style="auto" />
-//           <MyStack />
-//         </View>
-//       </Provider>
-//     </NavigationContainer>
-//   );
-// }

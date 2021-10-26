@@ -16,7 +16,7 @@ class DeckContainer extends Component {
     const { decks, navigation } = this.props;
     return (
       <ScrollView style={styles.container}>
-        <Text style={styles.title}>Mobile flashcard</Text>
+        <Text style={styles.title}>Study Decks</Text>
         {Object.values(decks).map((deck) => (
           <TouchableOpacity
             key={deck.title}

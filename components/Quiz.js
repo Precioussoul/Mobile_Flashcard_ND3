@@ -1,11 +1,35 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
-import { lightPurp, orange, pink, red, white } from "../utils/color";
+import {
+  gray,
+  lightPurp,
+  orange,
+  pink,
+  purple,
+  red,
+  white,
+} from "../utils/color";
+import PagerView from "react-native-pager-view";
 
+const DisplayScreen = {
+  DisplayQuestion: "DisplayQuestion",
+  DisplayAnswer: "DisplayAnswer",
+  DisplayResults: "DisplayResults",
+};
+
+const Response = {
+  correct: "correct",
+  Incorrect: "incorrect",
+};
 class Quiz extends Component {
   state = {
     showAnswer: false,
+    screen: DisplayScreen.DisplayResults,
+    correctCount: 0,
+    IncorrectCount: 0,
+    questionCount: this.props.deck.questions.length,
+    answerCount: new Array(this.props.deck.questions.length).fill(0),
   };
 
   ShowAnswer = () => {
@@ -15,74 +39,237 @@ class Quiz extends Component {
       this.setState({ showAnswer: false });
     }
   };
+
+  handleAnswer = (response, page) => {
+    if (response === Response.correct) {
+      this.setState((prevState) => ({
+        correctCount: prevState.correctCount + 1,
+      }));
+    } else {
+      this.setState((prevState) => ({
+        IncorrectCount: prevState.IncorrectCount + 1,
+      }));
+    }
+    this.setState(
+      (prevState) => ({
+        answered: prevState.answerCount.map((ans, idx) =>
+          page === idx ? 1 : ans
+        ),
+      }),
+      () => {
+        const { correctCount, IncorrectCount, questionCount } = this.state;
+
+        if (questionCount === correctCount + IncorrectCount) {
+          this.setState({ screen: DisplayScreen.DisplayResults });
+        } else {
+          PagerView.setPage(page + 1);
+          this.setState(() => ({
+            screen: DisplayScreen.DisplayQuestion,
+          }));
+        }
+      }
+    );
+  };
+
+  handleReset = () => {
+    this.setState((prevState) => ({
+      screen: DisplayScreen.DisplayQuestion,
+      correctCount: 0,
+      IncorrectCount: 0,
+      answerCount: Array(prevState.questionCount).fill(0),
+    }));
+  };
+
   render() {
-    const { decks } = this.props;
-    console.log("this is deck", decks);
-    const cardlist = Object.values(decks).map((deck) => deck);
-    console.log("this is cardlist", cardlist);
-    const questions = cardlist.map((card) => card.questions);
-    console.log("questions is here", questions);
-    const ReactQuestion = questions[2].map((react) => react.question);
-    const ReactAnswer = questions[2].map((react) => react.answer);
-    console.log("this is react", ReactQuestion);
-    const { showAnswer } = this.state;
-    const questionAnswer = showAnswer === true ? ReactAnswer : ReactQuestion;
-    return (
-      <View>
-        <Text style={[styles.plain, { fontSize: 30, marginTop: 10 }]}>
-          {" "}
-          {showAnswer === false ? "Question" : "Answer"}
-        </Text>
-        {questionAnswer.map((question, idx) => (
-          <View style={styles.Card} key={idx}>
-            <Text key={idx} style={styles.CardQuestion}>
-              {question}
+    const { questions } = this.props.deck;
+    const { showAnswer, answerCount } = this.state;
+    console.log("this is answeredCount", answerCount);
+
+    if (questions.length === 0) {
+      return (
+        <View style={[styles.Card, { flex: 0.7, marginTop: 20 }]}>
+          <View style={{ margin: 20 }}>
+            <Text style={[styles.plain, { textAlign: "center" }]}>
+              You cannot take a quiz because there are no cards in this deck.
+            </Text>
+            <Text style={{ textAlign: "center", paddingTop: 10 }}>
+              Please add some cards and try again.
+            </Text>
+            <TouchableOpacity
+              style={[styles.Card, { backgroundColor: purple, marginTop: 70 }]}
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+            >
+              <Text style={{ color: white }}>Go Back</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+
+    //
+
+    if (this.state.screen === DisplayScreen.DisplayResults) {
+      const { correctCount, questionCount } = this.state;
+      const percent = ((correctCount / questionCount) * 100).toFixed(0);
+      const resultStyle =
+        percent >= 70 ? styles.resultTextGood : styles.resultTextBad;
+
+      return (
+        <View style={styles.Card}>
+          <View style={{ margin: 10 }}>
+            <Text style={styles.plain}>Done</Text>
+          </View>
+          <View style={{ margin: 10 }}>
+            <Text style={[styles.plain, { textAlign: "center" }]}>
+              Quiz Complete!
+            </Text>
+            <Text style={resultStyle}>
+              {correctCount} / {questionCount} correct
             </Text>
           </View>
-        ))}
-        <TouchableOpacity onPress={this.ShowAnswer}>
-          <Text style={styles.plain}>
-            {showAnswer === false ? "Show Answer" : "Show Question"}
-          </Text>
-        </TouchableOpacity>
-        <View style={{ marginTop: 20 }}>
-          <Text style={[styles.plain, { color: lightPurp, fontSize: 14 }]}>
-            {" "}
-            Press the Button option to guess the Answer{" "}
-          </Text>
-          <TouchableOpacity
-            style={[
-              styles.Card,
-              { marginHorizontal: 70, backgroundColor: "green" },
-            ]}
-          >
-            <Text style={{ color: white, fontWeight: "bold", fontSize: 22 }}>
-              Correct
+          <View style={{ margin: 10 }}>
+            <Text style={[styles.plain, { textAlign: "center" }]}>
+              Percentage correct
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.Card,
-              { marginHorizontal: 70, backgroundColor: red },
-            ]}
-          >
-            <Text style={{ color: white, fontWeight: "bold", fontSize: 22 }}>
-              Incorrect
-            </Text>
-          </TouchableOpacity>
+            <Text style={resultStyle}>{percent}%</Text>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={[
+                styles.Card,
+                { backgroundColor: purple, borderColor: white },
+              ]}
+              onPress={this.handleReset}
+            >
+              <Text style={{ color: white }}>Restart Quiz</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.Card, { backgroundColor: orange }]}
+              onPress={() => {
+                this.handleReset();
+                this.props.navigation.navigate("Flashcard");
+              }}
+            >
+              <Text style={{ color: white }}>Home</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      );
+    }
+
+    return (
+      <PagerView style={{ flex: 1 }} initialPage={0}>
+        {questions.map((card, idx) => (
+          <View key={idx}>
+            <View style={{ marginBottom: 15 }}>
+              <Text style={{ fontSize: 20, color: purple, margin: 10 }}>
+                {idx + 1} / {questions.length}
+              </Text>
+            </View>
+            <View style={styles.Card}>
+              <Text key={idx} style={styles.CardQuestion}>
+                {showAnswer === false ? card.question : card.answer}
+              </Text>
+            </View>
+            <View>
+              <TouchableOpacity onPress={this.ShowAnswer}>
+                <Text style={styles.plain}>
+                  {showAnswer === false ? "Show Answer" : "Show Question"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginTop: 20 }}>
+              <Text style={[styles.plain, { color: lightPurp, fontSize: 14 }]}>
+                {" "}
+                Press the Button option to guess the Answer{" "}
+              </Text>
+              <TouchableOpacity
+                style={[
+                  styles.Card,
+                  { marginHorizontal: 70, backgroundColor: "green" },
+                ]}
+                onPress={() => this.handleAnswer(Response.correct, idx)}
+              >
+                <Text
+                  style={{ color: white, fontWeight: "bold", fontSize: 22 }}
+                >
+                  Correct
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.Card,
+                  { marginHorizontal: 70, backgroundColor: red },
+                ]}
+                onPress={() => this.handleAnswer(Response.Incorrect, idx)}
+              >
+                <Text
+                  style={{ color: white, fontWeight: "bold", fontSize: 22 }}
+                >
+                  Incorrect
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))}
+      </PagerView>
+
+      //   <View>
+      //     <Text style={[styles.plain, { fontSize: 30, marginTop: 10 }]}>
+      //       {" "}
+      //       {showAnswer === false ? "Question" : "Answer"}
+      //     </Text>
+      //     {questions.map((card, idx) => (
+      //       <View>
+      //         <View style={{ marginBottom: 15 }}>
+      //           <Text style={{ fontSize: 20 }}>
+      //             {idx + 1} / {questions.length}
+      //           </Text>
+      //         </View>
+      //         <View style={styles.Card} key={idx}>
+      //           <Text key={idx} style={styles.CardQuestion}>
+      //             {showAnswer === false ? card.question : card.answer}
+      //           </Text>
+      //         </View>
+      //       </View>
+      //     ))}
+      //     <TouchableOpacity onPress={this.ShowAnswer}>
+      //       <Text style={styles.plain}>
+      //         {showAnswer === false ? "Show Answer" : "Show Question"}
+      //       </Text>
+      //     </TouchableOpacity>
+      //     <View style={{ marginTop: 20 }}>
+      //       <Text style={[styles.plain, { color: lightPurp, fontSize: 14 }]}>
+      //         {" "}
+      //         Press the Button option to guess the Answer{" "}
+      //       </Text>
+      //       <TouchableOpacity
+      //         style={[
+      //           styles.Card,
+      //           { marginHorizontal: 70, backgroundColor: "green" },
+      //         ]}
+      //       >
+      //         <Text style={{ color: white, fontWeight: "bold", fontSize: 22 }}>
+      //           Correct
+      //         </Text>
+      //       </TouchableOpacity>
+      //       <TouchableOpacity
+      //         style={[
+      //           styles.Card,
+      //           { marginHorizontal: 70, backgroundColor: red },
+      //         ]}
+      //       >
+      //         <Text style={{ color: white, fontWeight: "bold", fontSize: 22 }}>
+      //           Incorrect
+      //         </Text>
+      //       </TouchableOpacity>
+      //     </View>
+      //   </View>
     );
   }
 }
-
-function mapStateToProps(decks) {
-  return {
-    decks,
-  };
-}
-
-export default connect(mapStateToProps)(Quiz);
 
 const styles = StyleSheet.create({
   Card: {
@@ -117,4 +304,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontStyle: "italic",
   },
+
+  resultTextGood: {
+    color: "green",
+    fontSize: 46,
+    textAlign: "center",
+  },
+  resultTextBad: {
+    color: red,
+    fontSize: 46,
+    textAlign: "center",
+  },
 });
+
+function mapStateToProps(decks, { route }) {
+  const { title } = route.params;
+  const deck = decks[title];
+  return {
+    deck,
+  };
+}
+
+export default connect(mapStateToProps)(Quiz);

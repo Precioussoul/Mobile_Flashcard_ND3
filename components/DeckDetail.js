@@ -4,6 +4,7 @@ import Deck from "./Deck";
 import { white, red, gray, purple, lightPurp } from "../utils/color";
 import { connect } from "react-redux";
 import { removeDeck } from "../actions";
+import { removeDeck as RemoveDecksAsync } from "../utils/api";
 class DeckDetail extends Component {
   shouldComponentUpdate(nextProps) {
     return nextProps.deck !== undefined;
@@ -12,6 +13,7 @@ class DeckDetail extends Component {
     const { navigation, dispatch } = this.props;
 
     dispatch(removeDeck(id));
+    RemoveDecksAsync(id);
 
     navigation.goBack();
   };

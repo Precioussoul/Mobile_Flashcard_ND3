@@ -30,6 +30,7 @@ export async function getDeck(id) {
 export async function saveDeckTitle(title) {
   try {
     await AsyncStorage.mergeItem(
+      DECK_INFORMATION_KEY,
       JSON.stringify({
         [title]: {
           title,

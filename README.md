@@ -1,6 +1,6 @@
 # Mobile Flashcards
 
-Mobile Flashcards is a React Native app for iOS and Android that allows users to create decks, add cards and quiz themselves.
+Mobile Flashcards is a React Native app for iOS and Android that allows users to create decks, add cards and quiz for personal study
 
 ![app](assets/App_screenshot_RN.png)
 

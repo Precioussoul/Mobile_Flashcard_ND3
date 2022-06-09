@@ -22,7 +22,7 @@ Clone the repository, change directories, and use npm or yarn to install the dep
 ```bash
 $ git clone https://github.com/Precioussoul/Mobile_Flashcard_ND3.git
 $ cd Mobile_Flashcard_ND3
-$ yarn
+$ yarn start
 ```
 
 ## Usage
